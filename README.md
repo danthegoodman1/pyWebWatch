@@ -4,6 +4,10 @@ By: Dan Goodman
 
 *A legendary one night project (hopefully, I'll probably keep adding features when I get bored)*
 
+## WHAT I DIDN'T DO YET AND MAY NOT
+
+- Schedule the pyWebWatch.py file to run in the background on a set interval, if you want to use this then you probably are capable of setting this up to run on an interval (cron)
+
 ## Supported Operating Systems
 
 - macOS
