@@ -23,6 +23,11 @@ I thought of this on the walk home from dinner and was wondering if I could make
 
 - Uses IFTTT to send email from a web request
 
+### Setup
+
+- Setup an IFTTT applet
+- Install is not done unfortunately
+
 ### To-Do
 
 - Support watching multiple pages at same time
