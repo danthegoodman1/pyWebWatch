@@ -25,13 +25,6 @@ def getConfig():
     with open(configFile) as jsonData:
         return json.load(jsonData)
 
-def makePageObject(url):
-    return {
-        'url': url,
-        'changes': 0,
-        'lastChange': datetime.now()
-    }
-
 def getPage(pageURL):
     return requests.get(pageURL).text
 
@@ -40,11 +33,32 @@ def getPageTree(pageURL):
     tree = html.fromstring(page.content)
     return tree
 
+def makePageObject(url):
+    return {
+        'url': url,
+        'changes': 0,
+        'lastChange': str(datetime.now()),
+        'oldPage': getPage(url),
+        'newPage': ''
+    }
+
 def addPage():
-    print('Alright, let\'s add a new page!')
+    print('Alright, let\'s add a new page!\nWhat\'s the URL?')
     newPage = input('> ')
-    oldData = getConfig()
-    oldData['monitoredPages']
+    newData = getConfig()
+    newData['monitoredPages'].append(makePageObject(newPage))
+    saveConfig(newData)
+
+def removePage():
+    print('Alright let\'s remove a page, what is the URL you want to remove?')
+    removeURL = input('> ')
+    data = getConfig()
+    for idx, val in enumerate(data['monitoredPages']):
+        if removeURL in val['url']:
+            del data['monitoredPages'][idx]
+            print('Removed ' + removeURL)
+    saveConfig(data)
+            
 
 # Development printing
 

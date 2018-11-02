@@ -79,6 +79,22 @@ def saveConfig(newConfig):
     json.dump(newConfig, saveFile)
     saveFile.close()
 
+def listWebsites():
+    gotConfig = getConfig()
+    siteList = []
+    for site in gotConfig['monitoredPages']:
+        siteList.append(site['url'])
+    return siteList
+
+def prettyListWebsites():
+    gotConfig = getConfig()
+    if len(gotConfig['monitoredPages']) < 1:
+        return 'None'
+    siteList = ''
+    for site in gotConfig['monitoredPages']:
+        siteList += '{}, '.format(site['url'])
+    return siteList[:-2]
+
 def header():
     print(colors.purple + """
  _______  __   __  _     _  _______  _______  _     _  _______  _______  _______  __   __ 
@@ -101,7 +117,7 @@ def clearscreen():
 def menuInfo():
     print(colors.yellow + 'Config loaded from: ' + colors.darkgray + configFile + colors.reset)
     print(colors.yellow + 'Email: ' + colors.darkgray + getConfig()['alertEmail'] + colors.reset)
-    print(colors.yellowbold + 'Currently monitoring: ' + colors.reset + 'https://google.com')
+    print(colors.yellowbold + 'Currently monitoring: ' + colors.reset + prettyListWebsites())
     print(colors.cyanbold + 'Last change: ' + colors.reset + colors.reset + 'never')
     print(colors.bluebold + 'Change count: ' + colors.reset + str(3))
 
@@ -123,10 +139,14 @@ def menu():
                 clearscreen()
                 header()
                 watcher.addPage()
+                menu()
             elif choice == 'c':
                 pass
             elif choice == 'r':
-                pass
+                clearscreen()
+                header()
+                watcher.removePage()
+                menu()
             elif choice == 'q':
                 exit(colors.red + 'See ya!' + colors.reset)
     except KeyboardInterrupt:
@@ -146,7 +166,7 @@ def checkFirstConfig():
         newConfig['firstConfig'] = False
         saveConfig(newConfig)
         print(colors.blue + 'Thanks! Let\'s get to it!')
-        sleep(2)
+        sleep(1)
     else:
         pass
 
