@@ -95,6 +95,15 @@ def prettyListWebsites():
         siteList += '{}, '.format(site['url'])
     return siteList[:-2]
 
+def prettyListWebsiteChanges():
+    gotConfig = getConfig()
+    if len(gotConfig['monitoredPages']) < 1:
+        return 'None'
+    siteList = ''
+    for site in gotConfig['monitoredPages']:
+        siteList += '{}, '.format(site['changes'])
+    return siteList[:-2]
+
 def header():
     print(colors.purple + """
  _______  __   __  _     _  _______  _______  _     _  _______  _______  _______  __   __ 
@@ -118,7 +127,7 @@ def menuInfo():
     print(colors.yellow + 'Config loaded from: ' + colors.darkgray + configFile + colors.reset)
     print(colors.yellow + 'Email: ' + colors.darkgray + getConfig()['alertEmail'] + colors.reset)
     print(colors.yellowbold + 'Currently monitoring: ' + colors.reset + prettyListWebsites())
-    print(colors.cyanbold + 'Last change: ' + colors.reset + colors.reset + 'never')
+    print(colors.cyanbold + 'Last changes: ' + colors.reset + colors.reset + prettyListWebsiteChanges())
     print(colors.bluebold + 'Change count: ' + colors.reset + str(3))
 
 def menu():
