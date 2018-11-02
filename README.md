@@ -12,6 +12,12 @@ By: Dan Goodman
 
 I thought of this on the walk home from dinner and was wondering if I could make an open source webpage watcher in a single night. Now if you will excuse me I got to get coding it instead of writing a readme file!
 
+### Features
+
+### To-Do
+
+- Support watching multiple pages at same time
+
 ### Supported Notification Mediums
 
 - Email (WIP)
