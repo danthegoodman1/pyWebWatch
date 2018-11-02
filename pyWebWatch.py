@@ -38,6 +38,8 @@ for idx, val in enumerate(data['monitoredPages']):
     oldPage = val['oldPage']
     newPage = watcher.getPage(val['url'])
     if oldPage != newPage:
+        data['monitoredPages'][idx]['oldPage'] = newPage
+        watcher.saveConfig(data)
         s1 = set(oldPage)
         s2 = set(newPage)
         diff = s2 - s1

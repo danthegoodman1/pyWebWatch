@@ -41,8 +41,7 @@ def makePageObject(url):
         'url': url,
         'changes': 0,
         'lastChange': str(datetime.now()),
-        'oldPage': getPage(url),
-        'newPage': ''
+        'oldPage': getPage(url)
     }
 
 def addPage():
