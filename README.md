@@ -4,6 +4,13 @@ By: Dan Goodman
 
 *A legendary one night project (hopefully, I'll probably keep adding features when I get bored)*
 
+## Supported Operating Systems
+
+- macOS
+- Linux
+
+*If you are going to complain about adding windows why don't you add the config and background service handling in and make a PR?*
+
 ## What is this?
 
 **pyWebWatch** is a tool for monitoring webpages for changes on a set interval. I has a menu, stored configs, runs as a background service, and can notify you in the listed methods below

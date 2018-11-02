@@ -63,7 +63,7 @@ elif os.path.isdir(configLocation[sys.platform]):
     createdFile.write(json.dumps(templateConfig))
     createdFile.close()
     print(colors.blue + 'Creating config file...')
-else:
+else: # This should never happen because the install makes the dir but might as well leave it
     os.mkdir(configLocation[sys.platform])
     createdFile = open(configFile, 'w')
     createdFile.write(templateConfig)
