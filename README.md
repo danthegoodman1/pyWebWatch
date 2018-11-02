@@ -21,6 +21,8 @@ I thought of this on the walk home from dinner and was wondering if I could make
 
 ### Features
 
+- Uses IFTTT to send email from a web request
+
 ### To-Do
 
 - Support watching multiple pages at same time

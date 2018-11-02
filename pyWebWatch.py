@@ -21,14 +21,24 @@ configLocation = {
 
 configFile = configLocation[sys.platform] + '/config.json'
 
+key = open('iftttkey', 'r')
+keydata = key.read().rstrip()
+
+link = 'https://maker.ifttt.com/trigger/pywebwatch/with/key/{}'.format(keydata)
+
 data = watcher.getConfig()
 
 def emailAlert(url, diffData):
-    pass
+    body: {
+        'value1': diffData
+    }
+    requests.post(link, body)
 
 for idx, val in enumerate(data['monitoredPages']):
     oldPage = val['oldPage']
     newPage = watcher.getPage(val['url'])
     if oldPage != newPage:
-        diff = difflib.ndiff(oldPage, newPage)
+        s1 = set(oldPage)
+        s2 = set(newPage)
+        diff = s2 - s1
         emailAlert(val['url'], diff)
