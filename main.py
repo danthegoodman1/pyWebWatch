@@ -7,11 +7,12 @@ Made with ❤ By Dan Goodman
 
 # Imports
 import sys
-import watcher
 from os.path import expanduser
 import os
 from time import sleep
 import json
+import watcher
+from datetime import datetime
 
 class colors:
     purple = '\033[0;95m'
@@ -35,6 +36,7 @@ class colors:
     lightgreen = '\033[0;92m'
     fadedgreen = '\033[2;92m'
     fadedyellow = '\033[2;93m'
+    darkgray = '\033[0;90m'
 
 homeDir = expanduser("~")
 
@@ -47,22 +49,35 @@ configLocation = {
 
 configFile = configLocation[sys.platform] + '/config.json'
 
-if os.path.isfile(configFile):
-    with open(configFile) as jsonData:
-        loadedConfig = json.load(jsonData)
+templateConfig = {
+    'monitoredPages': [],
+    'alertEmail': '',
+    'alertNumber': '', # Todo
+    'firstConfig': True
+}
+
+if os.path.exists(configFile) is True:
+    pass
 elif os.path.isdir(configLocation[sys.platform]):
     createdFile = open(configFile, 'w')
-    createdFile.write('{}')
+    createdFile.write(json.dumps(templateConfig))
     createdFile.close()
     print(colors.blue + 'Creating config file...')
 else:
     os.mkdir(configLocation[sys.platform])
     createdFile = open(configFile, 'w')
-    createdFile.write('{}')
+    createdFile.write(templateConfig)
     createdFile.close()
     print(colors.blue + 'Creating config folder and file...')
 
+def getConfig():
+    with open(configFile) as jsonData:
+        return json.load(jsonData)
 
+def saveConfig(newConfig):
+    saveFile = open(configFile, 'w')
+    json.dump(newConfig, saveFile)
+    saveFile.close()
 
 def header():
     print(colors.purple + """
@@ -84,7 +99,8 @@ def clearscreen():
         os.system('cls')
 
 def menuInfo():
-    print(colors.fadedyellow + 'Config loaded from: ' + colors.fadedgreen + configFile + colors.reset)
+    print(colors.yellow + 'Config loaded from: ' + colors.darkgray + configFile + colors.reset)
+    print(colors.yellow + 'Email: ' + colors.darkgray + getConfig()['alertEmail'] + colors.reset)
     print(colors.yellowbold + 'Currently monitoring: ' + colors.reset + 'https://google.com')
     print(colors.cyanbold + 'Last change: ' + colors.reset + colors.reset + 'never')
     print(colors.bluebold + 'Change count: ' + colors.reset + str(3))
@@ -97,12 +113,17 @@ def menu():
             header()
             menuInfo()
             print(colors.purplebold + 'Welcome to the main menu!' + colors.reset + colors.green + '\n  Would you like to:' + colors.reset)
+            print(colors.blue + '       Add a currently monitored page [a]' + colors.reset)
             print(colors.blue + '       Change a currently monitored page [c]' + colors.reset)
             print(colors.blue + '       Remove a currently monitored page [r]' + colors.reset)
             print(colors.blue + '       Quit [q]' + colors.reset)
             print(colors.purple)
             choice = input(colors.reset + colors.red + '> ' + colors.reset).lower()
-            if choice == 'c':
+            if choice == 'a':
+                clearscreen()
+                header()
+                watcher.addPage()
+            elif choice == 'c':
                 pass
             elif choice == 'r':
                 pass
@@ -111,7 +132,27 @@ def menu():
     except KeyboardInterrupt:
         print(colors.redbold + "\nYou want to leave so early?\nI thought we were just getting started!" + colors.reset)
 
+def checkFirstConfig():
+    print(getConfig()['firstConfig'])
+    if getConfig()['firstConfig'] is True:
+        clearscreen()
+        header()
+        print(colors.purplebold + 'Welcome!' + colors.reset)
+        print(colors.green + 'We need to generate your config file with some info...' + colors.reset)
+        print(colors.blue + 'What is the email you want to send alerts to?' + colors.reset)
+        alertEmail = input('> ')
+        newConfig = getConfig()
+        newConfig['alertEmail'] = alertEmail
+        newConfig['firstConfig'] = False
+        saveConfig(newConfig)
+        print(colors.blue + 'Thanks! Let\'s get to it!')
+        sleep(2)
+    else:
+        pass
+
+
 def main():
+    checkFirstConfig()
     menu()
 
 main()
